@@ -387,33 +387,7 @@ An invalid disaster ID was also tested to verify that database foreign-key const
 - Perform performance and concurrency testing.
 - Develop a mobile application for field rescue teams.
 
-## Team Members
-
-| Name | Registration Number |
-|---|---|
-| Aditya Nishant Karna | RA2511003050530 |
-| Yugandhar Yadav | RA2511003050528 |
-| Rahul Yadav | RA2511003050532 |
-| Dharmik Sai | RA2511003050347 |
-
-**Project Guide:** Dr. S. Shargunam
-
-**Institution:** SRM Institute of Science and Technology, Tiruchirappalli
-
-**Programme:** B.Tech – Computer Science and Engineering
-
-## Academic Project
-
-Developed as part of the Advanced Programming Practice (APP) course.
-
-## License
-
-This project is developed for academic and educational purposes.
-
----
-
-**Smart Disaster Evacuation & Resource Allocation System**  
-*Technology-driven support for disaster response and evacuation management.*## Course Details
+## Course Details
 
 | Detail | Information |
 |---|---|

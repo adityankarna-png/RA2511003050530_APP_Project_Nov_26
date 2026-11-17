@@ -413,4 +413,38 @@ This project is developed for academic and educational purposes.
 ---
 
 **Smart Disaster Evacuation & Resource Allocation System**  
-*Technology-driven support for disaster response and evacuation management.*
+*Technology-driven support for disaster response and evacuation management.*## Course Details
+
+| Detail | Information |
+|---|---|
+| Course ID | 21CSC203P |
+| Course Name | Advanced Programming Practice (APP) |
+| Department | Computer Science and Engineering (CSE) |
+| Section | F |
+| Academic Year | Second Year (2026–2027) |
+| Institution | SRM Institute of Science and Technology, Tiruchirappalli |
+
+## Team Members
+
+| S.No. | Full Name | Register Number | Department | Section | Academic Year |
+|---|---|---|---|---|---|
+| 1 | Aditya Nishant Karna | RA2511003050530 | CSE | F | Second Year |
+| 2 | Yugandhar Yadav | RA2511003050528 | CSE | F | Second Year |
+| 3 | Rahul Yadav | RA2511003050532 | CSE | F | Second Year |
+| 4 | Dharmik Sai | RA2511003050347 | CSE | F | Second Year |
+
+## Mentor Details
+
+| Detail | Information |
+|---|---|
+| Mentor Name | Dr. S. Shargunam |
+| Designation | Assistant Professor (AP) |
+| Course | Advanced Programming Practice (APP) |
+
+## Project Information
+
+**Project Title:** Smart Disaster Evacuation & Resource Allocation System
+
+**Project Type:** Academic Java Application
+
+**Institution:** SRM Institute of Science and Technology, Tiruchirappalli

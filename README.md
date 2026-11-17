@@ -1,664 +1,416 @@
-🚨 Smart Disaster Evacuation System
+# Smart Disaster Evacuation & Resource Allocation System
+
+A Java-based disaster management application designed to manage disaster information, register victims, monitor shelters and resources, and prioritize evacuation operations through a rule-based priority calculation system.
+
+## Project Overview
+
+The **Smart Disaster Evacuation & Resource Allocation System** is a desktop application developed to support disaster response operations. During emergencies, coordinating victims, shelters, rescue resources, and evacuation activities can become difficult when information is managed manually.
+
+This system provides a centralized platform where administrators and response teams can manage disaster-related information, monitor available resources, and process evacuation requests efficiently.
+
+The application uses Java Swing for its graphical user interface and MySQL for database management. It also incorporates multithreading for background monitoring and notification operations.
+
+## Objectives
+
+- Centralize disaster-related information.
+- Maintain victim records and identify evacuation requirements.
+- Manage shelters and their available capacity.
+- Monitor resources and their stock levels.
+- Calculate victim evacuation priorities using a rule-based scoring system.
+- Assign victims to suitable shelters and available resources.
+- Process evacuation requests and monitor their status.
+- Provide reports and system notifications.
+
+## Key Features
+
+### 1. Dashboard
+- Displays an overview of system activities.
+- Provides access to different application modules.
+- Presents disaster, victim, shelter, resource, and evacuation information.
+
+### 2. Disaster Management
+- Add and manage disaster records.
+- Maintain disaster-related information.
+- Monitor active disaster records.
+
+### 3. Victim Management
+- Register victims affected by disasters.
+- Maintain victim information.
+- Record vulnerability and medical details.
+- Support evacuation prioritization.
+
+### 4. Shelter Management
+- Maintain shelter information.
+- Monitor shelter occupancy and capacity.
+- Identify shelters with available capacity.
+
+### 5. Resource Management
+- Manage available relief resources.
+- Track resource quantities.
+- Update stock after resource allocation.
+- Identify resources that are out of stock.
+
+### 6. Evacuation Management
+- Generate evacuation requests for registered victims.
+- Calculate evacuation priority scores.
+- Assign suitable shelters and available resources.
+- Maintain evacuation status.
+
+### 7. Reports
+- Display system summary information.
+- Retrieve reporting data from the database.
+- Perform background report loading using SwingWorker.
+
+### 8. Background Monitoring
+The application uses Java multithreading to perform background activities, including:
+
+- Disaster monitoring.
+- Resource monitoring.
+- Evacuation processing.
+- Notification services.
+- Weather monitoring.
+
+### 9. Role-Based Access
+The application includes role-based GUI permissions for:
+
+- ADMIN
+- RESCUE_TEAM
+- MEDICAL_TEAM
 
-A Java-based disaster management and evacuation system designed to support emergency response operations through centralized disaster, victim, shelter, resource, and evacuation management.
+Access to application modules is controlled through the user interface.
 
-The system provides a role-based Java Swing interface connected to a MySQL database using JDBC, along with background multithreading services for disaster monitoring, resource monitoring, evacuation processing, notifications, and automated reporting.
+## Technology Stack
 
-📌 Project Overview
+| Component | Technology |
+|---|---|
+| Programming Language | Java |
+| GUI | Java Swing |
+| Database | MySQL |
+| Database Connectivity | JDBC |
+| Architecture | Layered Architecture |
+| Multithreading | Java Threads |
+| Background GUI Tasks | SwingWorker |
+| IDE | IntelliJ IDEA / NetBeans |
+| Build and Dependency Management | Maven |
 
-The Smart Disaster Evacuation System is designed to help emergency response teams manage disaster situations efficiently from a centralized control center.
+## System Architecture
 
-The system allows authorized users to:
+The application follows a layered architecture to separate user interface operations, business logic, database operations, and data models.
 
-Register and manage disasters
+```text
+              USER
+                |
+                v
+       JAVA SWING GUI
+                |
+                v
+        SERVICE LAYER
+       (Business Logic)
+                |
+                v
+          DAO LAYER
+       (Database Access)
+                |
+                v
+          MYSQL DATABASE
+```
 
-Register and manage victims
+### Main Layers
 
-Manage emergency shelters
+**1. Presentation Layer**
 
-Manage emergency resources
+Contains Swing-based graphical components such as:
 
-Create and monitor evacuation records
+- MainFrame
+- DashboardPanel
+- DisasterPanel
+- VictimPanel
+- ShelterPanel
+- ResourcePanel
+- EvacuationPanel
+- ReportsPanel
 
-View real-time operational statistics
+**2. Service Layer**
 
-Generate emergency reports
+Contains the business logic of the application.
 
-Monitor system conditions in the background
+Examples:
+- EvacuationService
+- EvacuationServiceImpl
 
-Control access based on user roles
+**3. DAO Layer**
 
-The application follows a layered architecture combining a Java Swing presentation layer, business/service layer, JDBC data access layer, MySQL database layer, and a multithreading layer.
+Handles database operations through JDBC.
 
-🎯 Objectives
+Examples:
+- DisasterDAO
+- VictimDAO
+- ShelterDAO
+- ResourceDAO
+- EvacuationDAO
+- ReportDAO
 
-Provide a centralized disaster management system
+**4. Model Layer**
 
-Improve organization of emergency response operations
+Contains Java classes representing the application's entities.
 
-Manage victims and their evacuation requirements
+Examples:
+- Disaster
+- Victim
+- Shelter
+- Resource
+- Evacuation
 
-Track shelter capacity and occupancy
+**5. Exception Handling**
 
-Monitor emergency resources
+Custom exceptions are used to handle application-specific situations.
 
-Support evacuation planning and processing
+Examples:
+- NoResourceAvailableException
+- NoShelterAvailableException
+- VictimNotFoundException
 
-Provide role-based access to system modules
+## Evacuation Priority Algorithm
 
-Generate operational reports and statistics
+The system uses a rule-based scoring mechanism to determine the urgency of evacuation for each victim.
 
-Perform background monitoring using multithreading
+The priority score is calculated using:
 
-Maintain reliable communication with the MySQL database
+**P = V + Z + W + M**
 
-🏗️ System Architecture
+Where:
 
-The system follows a layered architecture:
+| Parameter | Description |
+|---|---|
+| P | Total priority score |
+| V | Victim vulnerability score |
+| Z | Disaster zone risk score |
+| W | Waiting-time score |
+| M | Medical condition score |
 
-PRESENTATION LAYER — Java Swing GUI
-        ↓
-APPLICATION / BUSINESS LAYER
-        ↓
-MULTITHREADING LAYER
-        ↓
-DATA ACCESS LAYER — JDBC
-        ↓
-DATABASE LAYER — MySQL
+Medical condition score:
 
-Multithreading Layer
+- 5 points if the victim has a medical condition.
+- 0 points if the medical condition is recorded as `None`.
 
-                    SystemMonitor
-                         │
-          ┌──────────────┼──────────────┐
-          ↓              ↓              ↓
-     Disaster        Resource       Evacuation
-     Monitoring      Monitoring      Processing
-          │              │              │
-          └──────────────┼──────────────┘
-                         ↓
-                 Notification Service
-                         │
-                         ↓
-                  Reporting Service
+A higher priority score indicates a more urgent evacuation requirement.
 
-✨ Features
+This is a rule-based algorithm, not a machine learning model.
 
-🔐 Authentication & Role-Based Access
+## Evacuation Workflow
 
-The system provides login authentication with different access permissions.
+1. Register disaster information.
+2. Register victims associated with the disaster.
+3. Calculate each victim's priority score.
+4. Identify a suitable shelter with available capacity.
+5. Check the availability of required resources.
+6. Create an evacuation record.
+7. Assign the shelter and resource.
+8. Update shelter occupancy and resource stock.
+9. Maintain the evacuation status.
 
-Supported Roles
+If a victim, suitable shelter, or required resource is unavailable, the system handles the situation through its exception-handling mechanisms.
 
-Role
+## Multithreading Implementation
 
-Access
+The system uses background threads to monitor and process application activities.
 
-ADMIN
+| Thread / Component | Responsibility |
+|---|---|
+| DisasterMonitoringThread | Monitors disaster information |
+| ResourceMonitoringThread | Monitors resource availability |
+| EvacuationProcessingThread | Checks pending evacuation requests |
+| NotificationServiceThread | Checks conditions requiring notifications |
+| WeatherMonitor | Handles weather-monitoring functionality |
 
-Full system access
+The evacuation processing thread checks pending evacuation records periodically, while the notification service monitors relevant system conditions.
 
-RESCUE_TEAM
+## Database
 
-Disaster, Victim, Shelter, Resource & Evacuation operations
+The project uses **MySQL** as its relational database and JDBC for communication between Java and the database.
 
-MEDICAL_TEAM
+The database stores information related to:
 
-Victim and Evacuation operations
+- Disasters
+- Victims
+- Shelters
+- Resources
+- Evacuations
+- Reports and related records
 
-Unauthorized modules are automatically hidden from the navigation panel based on the logged-in user's role.
+Database connection configuration is handled through the `DBConnection` class.
 
-📊 Dashboard
+## Project Structure
 
-The dashboard provides an overview of the current emergency response situation.
+The following is the logical organization of the application. Actual package names and folder locations may differ depending on the project configuration.
 
-It displays:
-
-Total disasters
-
-Registered victims
-
-Available shelters
-
-Available resources
-
-Database connection status
-
-Evacuation service status
-
-Resource monitoring status
-
-🚨 Disaster Management
-
-The Disaster Management module allows authorized users to:
-
-Register disasters
-
-View registered disasters
-
-Track disaster type
-
-Track disaster location
-
-Monitor disaster status
-
-Update disaster information
-
-Example disaster statuses:
-
-ACTIVE
-RESOLVED
-
-👥 Victim Management
-
-The Victim Management module provides functionality for registering and managing affected individuals.
-
-Victim information includes:
-
-Victim ID
-
-Name
-
-Age
-
-Medical condition
-
-Vulnerability score
-
-Evacuation-related information
-
-The system supports victim prioritization for emergency evacuation.
-
-🏠 Shelter Management
-
-The Shelter Management module manages emergency shelters.
-
-It tracks:
-
-Shelter name
-
-Location
-
-Capacity
-
-Available capacity
-
-Current occupancy
-
-Shelter status
-
-📦 Resource Management
-
-Emergency resources can be registered and monitored through the Resource Management module.
-
-The system tracks:
-
-Resource type
-
-Quantity
-
-Location
-
-Availability status
-
-The background Resource Monitoring Thread detects changes in resource availability.
-
-🚑 Evacuation Management
-
-The Evacuation module manages evacuation assignments and processing.
-
-The system maintains information such as:
-
-Evacuation ID
-
-Victim
-
-Shelter
-
-Assigned resource
-
-Evacuation status
-
-Priority
-
-Pending evacuations are monitored by the background Evacuation Processing Thread.
-
-📈 Reports & Analytics
-
-The Reports & Analytics module provides a centralized overview of emergency response statistics.
-
-Disaster Overview
-
-Total disasters
-
-Active disasters
-
-Resolved disasters
-
-Victim Overview
-
-Total victims
-
-High-priority victims
-
-Waiting victims
-
-Shelter Overview
-
-Total shelters
-
-Available shelters
-
-Full shelters
-
-Resource Overview
-
-Resource types
-
-Available resources
-
-Out-of-stock resources
-
-Evacuation Overview
-
-Total evacuations
-
-Pending evacuations
-
-Completed evacuations
-
-Capacity Statistics
-
-Total shelter capacity
-
-Current shelter occupancy
-
-Total resource quantity
-
-🧵 Multithreading
-
-The system implements a dedicated multithreading layer for background operations.
-
-1. Disaster Monitoring Thread
-
-Periodically monitors active disasters and detects changes in the number of active incidents.
-
-2. Resource Monitoring Thread
-
-Monitors resource quantities and out-of-stock resources.
-
-3. Evacuation Processing Thread
-
-Monitors pending evacuation records and detects changes in evacuation processing.
-
-4. Notification Service Thread
-
-Monitors important system conditions and generates notifications for events such as:
-
-New active disasters
-
-Resources becoming unavailable
-
-New pending evacuations
-
-Evacuation updates
-
-5. Reporting Service Thread
-
-Periodically generates automated system reports using the existing ReportDAO.
-
-SystemMonitor
-
-SystemMonitor manages the lifecycle of all background services and provides graceful shutdown.
-
-🗄️ Database
-
-The application uses MySQL as its database.
-
-Main tables:
-
-users
-disasters
-victims
-shelters
-resources
-evacuations
-
-🛠️ Technologies Used
-
-Technology
-
-Purpose
-
-Java
-
-Core application development
-
-Java Swing
-
-Graphical User Interface
-
-JDBC
-
-Database connectivity
-
-MySQL
-
-Database management
-
-Maven
-
-Project and dependency management
-
-IntelliJ IDEA
-
-Development environment
-
-Git
-
-Version control
-
-GitHub
-
-Source code hosting
-
-Java Multithreading
-
-Background monitoring and processing
-
-📁 Project Structure
-
+```text
 SmartDisasterEvacuationSystem/
 │
 ├── src/
 │   └── main/
 │       └── java/
-│           └── com/
-│               └── disaster/
-│                   ├── dao/
-│                   │   ├── DisasterDAO.java
-│                   │   ├── EvacuationDAO.java
-│                   │   ├── ResourceDAO.java
-│                   │   ├── ShelterDAO.java
-│                   │   ├── VictimDAO.java
-│                   │   └── ReportDAO.java
-│                   │
-│                   ├── database/
-│                   │   ├── DBConnection.java
-│                   │   └── Main.java
-│                   │
-│                   ├── exceptions/
-│                   │   ├── NoResourceAvailableException.java
-│                   │   ├── NoShelterAvailableException.java
-│                   │   └── VictimNotFoundException.java
-│                   │
-│                   ├── gui/
-│                   │   ├── LoginFrame.java
-│                   │   ├── MainFrame.java
-│                   │   ├── DashboardPanel.java
-│                   │   ├── DisasterPanel.java
-│                   │   ├── VictimPanel.java
-│                   │   ├── ShelterPanel.java
-│                   │   ├── ResourcePanel.java
-│                   │   ├── EvacuationPanel.java
-│                   │   └── ReportPanel.java
-│                   │
-│                   ├── model/
-│                   │   ├── Disaster.java
-│                   │   ├── Evacuation.java
-│                   │   ├── Resource.java
-│                   │   ├── Shelter.java
-│                   │   └── Victim.java
-│                   │
-│                   └── service/
-│                       ├── EvacuationService.java
-│                       ├── EvacuationServiceImpl.java
-│                       ├── DisasterMonitoringThread.java
-│                       ├── ResourceMonitoringThread.java
-│                       ├── EvacuationProcessingThread.java
-│                       ├── NotificationServiceThread.java
-│                       ├── ReportingServiceThread.java
-│                       └── SystemMonitor.java
+│           ├── model/
+│           │   ├── Disaster.java
+│           │   ├── Victim.java
+│           │   ├── Shelter.java
+│           │   ├── Resource.java
+│           │   └── Evacuation.java
+│           │
+│           ├── dao/
+│           │   ├── DisasterDAO.java
+│           │   ├── VictimDAO.java
+│           │   ├── ShelterDAO.java
+│           │   ├── ResourceDAO.java
+│           │   ├── EvacuationDAO.java
+│           │   └── ReportDAO.java
+│           │
+│           ├── service/
+│           │   ├── EvacuationService.java
+│           │   └── EvacuationServiceImpl.java
+│           │
+│           ├── exception/
+│           │   ├── NoResourceAvailableException.java
+│           │   ├── NoShelterAvailableException.java
+│           │   └── VictimNotFoundException.java
+│           │
+│           ├── monitor/
+│           │   ├── SystemMonitor.java
+│           │   ├── EvacuationProcessingThread.java
+│           │   ├── NotificationServiceThread.java
+│           │   └── WeatherMonitor.java
+│           │
+│           └── gui/
+│               ├── MainFrame.java
+│               ├── DashboardPanel.java
+│               ├── DisasterPanel.java
+│               ├── VictimPanel.java
+│               ├── ShelterPanel.java
+│               ├── ResourcePanel.java
+│               ├── EvacuationPanel.java
+│               └── ReportsPanel.java
 │
 ├── pom.xml
-├── .gitignore
 └── README.md
+```
 
-⚙️ Requirements
+## Installation and Setup
 
-Before running the project, make sure you have:
+### Prerequisites
 
-Java JDK 21 or later
+Install the following software:
 
-MySQL Server
+- Java Development Kit (JDK)
+- MySQL Server
+- MySQL Workbench (optional)
+- IntelliJ IDEA or NetBeans
+- Maven
 
-MySQL Workbench (recommended)
+### Step 1: Clone the Repository
 
-Maven
+```bash
+git clone https://github.com/adityakarna-png/Smart-Disaster-Evacuation-System.git
+```
 
-IntelliJ IDEA or another Java IDE
+### Step 2: Open the Project
 
-🚀 Setup & Installation
+Open the cloned project folder in IntelliJ IDEA or NetBeans.
 
-1. Clone the repository
+If the project uses Maven, allow the IDE to download and resolve the required dependencies.
 
-git clone https://github.com/adityankarna-png/Smart-Disaster-Evacuation-System.git
-cd Smart-Disaster-Evacuation-System
+### Step 3: Configure MySQL
 
-2. Configure MySQL
+1. Start the MySQL server.
+2. Create the project database.
+3. Import or execute the SQL database schema provided with the project.
+4. Update the database connection details in `DBConnection.java`.
 
-Create the database:
+Example configuration:
 
-CREATE DATABASE disaster_management;
-
-Then create the required tables:
-
-users
-disasters
-victims
-shelters
-resources
-evacuations
-
-3. Configure Database Connection
-
-Open:
-
-src/main/java/com/disaster/database/DBConnection.java
-
-Configure your local MySQL credentials.
-
-Example:
-
+```java
 private static final String URL =
-        "jdbc:mysql://localhost:3306/disaster_management";
+    "jdbc:mysql://localhost:3306/your_database";
 
-private static final String USER =
-        "YOUR_USER";
+private static final String USER = "your_username";
 
-private static final String PASSWORD =
-        "YOUR_PASSWORD";
+private static final String PASSWORD = "your_password";
+```
 
-Important: Do not commit your real database password to GitHub.
+Replace the example values with your local MySQL configuration.
 
-4. Build the project
+### Step 4: Configure JDBC
 
-mvn clean compile
+Ensure that MySQL Connector/J is included in the project's Maven dependencies.
 
-5. Run the application
+### Step 5: Run the Application
 
-Run the application's login frame from your IDE.
+Run the project's main Java class from your IDE.
 
-Application flow:
+The Swing application should open with the main application window.
 
-Login
-  ↓
-Authentication
-  ↓
-Main Dashboard
-  ↓
-SystemMonitor
-  ↓
-Background Services
+## Testing
 
-👤 Demo Accounts
+The project was tested using multiple functional and validation scenarios.
 
-The project includes demo accounts for testing role-based access.
+The recorded testing included:
 
-Role
+- Disaster record creation.
+- Victim registration.
+- Priority score calculation.
+- Evacuation record creation.
+- Shelter and resource allocation.
+- Database constraint validation.
 
-Username
+The recorded test cases passed.
 
-Password
+An invalid disaster ID was also tested to verify that database foreign-key constraints prevent invalid references.
 
-Administrator
+## Current Limitations
 
-admin
+- The earthquake/disaster testing workflow uses simulated data rather than a live seismic data feed.
+- The priority scoring weights are rule-based and have not been validated by disaster-management experts.
+- The application has not undergone large-scale concurrent allocation stress testing.
+- Evacuation, shelter, and resource database updates are not yet implemented as one atomic transaction.
+- Role-based permissions are enforced at the GUI level and are not a complete server-side security system.
+- The application has not yet been validated in real-world disaster-response operations.
 
-admin123
+## Future Enhancements
 
-Rescue Team
+- Integrate live disaster and earthquake data APIs.
+- Integrate real-time weather information services.
+- Introduce GPS-based victim and shelter location tracking.
+- Implement map-based evacuation route visualization.
+- Add automated route optimization.
+- Improve resource allocation using optimization algorithms.
+- Implement database transactions for safer allocation operations.
+- Strengthen authentication and authorization.
+- Perform performance and concurrency testing.
+- Develop a mobile application for field rescue teams.
 
-rescue
+## Team Members
 
-rescue123
+| Name | Registration Number |
+|---|---|
+| Aditya Nishant Karna | RA2511003050530 |
+| Yugandhar Yadav | RA2511003050528 |
+| Rahul Yadav | RA2511003050532 |
+| Dharmik Sai | RA2511003050347 |
 
-Medical Team
+**Project Guide:** Dr. S. Shargunam
 
-medical
+**Institution:** SRM Institute of Science and Technology, Tiruchirappalli
 
-medical123
+**Programme:** B.Tech – Computer Science and Engineering
 
-These credentials are intended for local/demo testing only.
+## Academic Project
 
-🧪 Testing
+Developed as part of the Advanced Programming Practice (APP) course.
 
-The project has been tested for:
+## License
 
-Database connectivity
+This project is developed for academic and educational purposes.
 
-User authentication
+---
 
-Role-based permissions
-
-Dashboard statistics
-
-Disaster management
-
-Victim management
-
-Shelter management
-
-Resource management
-
-Evacuation management
-
-Reports & Analytics
-
-Background monitoring
-
-Multithreaded services
-
-Graceful application shutdown
-
-The application successfully starts all five background services and shuts them down cleanly when the application closes.
-
-Example shutdown:
-
-[Disaster Monitoring] Thread exited.
-[Reporting Service] Thread exited.
-[Resource Monitoring] Thread exited.
-[Evacuation Processing] Thread exited.
-[Notification Service] Thread exited.
-
-Process finished with exit code 0
-
-🔒 Role Permissions
-
-ADMIN
-│
-├── Dashboard
-├── Disasters
-├── Victims
-├── Shelters
-├── Resources
-├── Evacuation
-└── Reports
-
-RESCUE_TEAM
-│
-├── Dashboard
-├── Disasters
-├── Victims
-├── Shelters
-├── Resources
-└── Evacuation
-
-MEDICAL_TEAM
-│
-├── Dashboard
-├── Victims
-└── Evacuation
-
-The interface dynamically hides modules that the logged-in role is not authorized to use.
-
-📊 System Workflow
-
-Disaster Occurs
-       ↓
-Disaster Registered
-       ↓
-Affected Areas Identified
-       ↓
-Victim Data Collected
-       ↓
-Priority Determined
-       ↓
-Resources Allocated
-       ↓
-Evacuation Plan Generated
-       ↓
-Evacuation Processed
-       ↓
-Shelter Occupancy Updated
-       ↓
-Real-Time Monitoring
-       ↓
-Reports & Analytics
-
-🔮 Future Enhancements
-
-Possible future improvements include:
-
-Interactive maps and live location tracking
-
-SMS/email emergency notifications
-
-Weather API integration
-
-Advanced evacuation route optimization
-
-AI-based disaster risk prediction
-
-Mobile application
-
-Real-time graphical analytics
-
-Cloud database deployment
-
-Multi-location disaster coordination
-
-👨‍💻 Project
-
-Smart Disaster Evacuation & Resource Allocation System
-
-Built using:
-
-Java + Swing + JDBC + MySQL + Maven + Multithreading
-
-⭐ Repository
-
-If you find this project useful, consider giving the repository a ⭐ on GitHub.
-
-Smart Disaster Evacuation System
-Emergency Response • Victim Management • Resource Allocation • Evacuation • Analytics
+**Smart Disaster Evacuation & Resource Allocation System**  
+*Technology-driven support for disaster response and evacuation management.*

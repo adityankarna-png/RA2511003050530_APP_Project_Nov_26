@@ -483,16 +483,3 @@ Academic Information
 • Project Guide: Dr. S. Shargunam
 
 ────────
-
-Before submission
-
-☐ Confirm the final source code and repository link.
-☐ Record exact JDK, MySQL, and IDE/build-tool versions.
-☐ Add the actual schema/setup SQL and verify the instructions from
-a clean setup.
-☐ Add screenshots from the final build.
-☐ Rerun the tests and attach evidence for each claimed result.
-☐ Review database transaction consistency and exception handling.
-☐ Remove local credentials and private data from the repository.
-☐ Replace any project-specific setup assumptions with verified
-instructions.
